@@ -7,7 +7,7 @@
     "launch": "node ./scripts/launch.js",
     "lerna": "npx lerna",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "audio:merge_and_divide": "node ./scripts/launcher.js --process synthesize"
+    "audio:merge_and_divide": "node ./scripts/launcher.js --operation audio"
   },
   "repository": {
     "type": "url",

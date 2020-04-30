@@ -5,11 +5,14 @@ const processEnv = env.get();
 const { argv } = require('yargs');
 const { createLauncher, proc } = require('process-launch');
 const { logger } = require('jege/server');
+const path = require('path');
 
-const log = logger('[website]');
+const log = logger('[dock-defenders]');
+
+const outputPath = path.resolve(__dirname, '../output');
 
 const processDefinitions = {
-  synthesize: proc(
+  'audio:merge_and_divide': proc(
     'sh',
     [
       './launch.sh',
@@ -17,6 +20,17 @@ const processDefinitions = {
     ],
     {
       cwd: `./packages/sound-synthesizer`,
+      stdio: 'inherit',
+    },
+  ),
+  'audio:spectrogram': proc(
+    'python3',
+    [
+      './app.py',
+      outputPath,
+    ],
+    {
+      cwd: './packages/spectrogram-creator',
       stdio: 'inherit',
     },
   ),
@@ -65,10 +79,19 @@ function launcher() {
       processGroupDefinitions,
     });
 
-    Launcher.run({
-      process: argv.process,
-      processGroup: argv.processGroup,
-    });
+    if (argv.operation === undefined) {
+      Launcher.run({
+        process: argv.process,
+        processGroup: argv.processGroup,
+      });
+    } else {
+      Launcher.runInSequence({
+        order: [
+          'audio:merge_and_divide',
+          'audio:spectrogram',
+        ],
+      });
+    }
   } catch (err) {
     log('launcher(): Error reading file', err);
   }

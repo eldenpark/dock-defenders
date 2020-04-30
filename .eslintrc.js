@@ -7,6 +7,7 @@ const log = logger('[dock-defenders]');
 const excludedPackages = [
   'image-extractor',
   'sound-synthesizer',
+  'spectrogram-creator',
 ];
 const packageDir = [__dirname].concat(
   fs.readdirSync(path.resolve(__dirname, 'packages'))

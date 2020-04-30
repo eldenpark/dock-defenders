@@ -4,4 +4,7 @@
     "scripts/**/*",
     ".eslintrc.js",
   ],
+  "exclude": [
+    "packages/spectrogram-creator"
+  ],
 }
