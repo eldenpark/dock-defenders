@@ -2,7 +2,7 @@ const fs = require('fs');
 const { logger } = require('jege/server');
 const path = require('path');
 
-const log = logger('[website]');
+const log = logger('[dock-defenders]');
 
 const excludedPackages = [
   'image-extractor',
@@ -10,7 +10,7 @@ const excludedPackages = [
 ];
 const packageDir = [__dirname].concat(
   fs.readdirSync(path.resolve(__dirname, 'packages'))
-    .filter((child) => excludedPackages.indexOf(child) < 0)
+    .filter((child) => (excludedPackages.indexOf(child) < 0) && !child.startsWith('.'))
     .map((child) => path.resolve(__dirname, 'packages', child)),
 );
 

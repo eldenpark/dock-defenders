@@ -9,6 +9,17 @@ const { logger } = require('jege/server');
 const log = logger('[website]');
 
 const processDefinitions = {
+  synthesize: proc(
+    'sh',
+    [
+      './launch.sh',
+      ...argv._,
+    ],
+    {
+      cwd: `./packages/sound-synthesizer`,
+      stdio: 'inherit',
+    },
+  ),
   websiteDev: proc(
     'node',
     [

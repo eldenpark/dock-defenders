@@ -128,7 +128,7 @@ docs/*
 !docs/.gitkeep
 build/*
 !build/.gitkeep
-audio/*
-!audio/.gitkeep
-
-.build/
+data/*
+!data/.gitkeep
+output/*
+!output/.gitkeep
