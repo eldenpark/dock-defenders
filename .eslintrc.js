@@ -6,6 +6,7 @@ const log = logger('[dock-defenders]');
 
 const excludedPackages = [
   'image-extractor',
+  'model-simulator',
   'sound-synthesizer',
   'spectrogram-creator',
 ];
@@ -84,6 +85,7 @@ module.exports = {
     'jsx-a11y/click-events-have-key-events': ['off'],
     'jsx-a11y/label-has-associated-control': ['off'],
     'jsx-a11y/label-has-for': ['off'],
+    'jsx-a11y/media-has-caption': ['off'],
     'jsx-a11y/no-noninteractive-element-interactions': ['off'],
     'lines-between-class-members': ['off'],
     'no-await-in-loop': ['off'],

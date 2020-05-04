@@ -4,7 +4,6 @@ const isProd = process.env.NODE_ENV === 'production';
 
 const babelRc = {
   plugins: [
-    r('react-hot-loader/babel'),
     [
       r('babel-plugin-module-resolver'), {
         alias: {

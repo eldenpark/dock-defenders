@@ -9,7 +9,6 @@ const config = {
   entry: {
     client: path.resolve(process.env.WEBSITE_SRC_PATH, 'client/client.tsx'),
     hotLoader: [
-      'react-hot-loader/patch',
       'webpack-hot-middleware/client',
     ],
     react: ['react', 'react-dom'],
@@ -20,7 +19,7 @@ const config = {
   },
   output: {
     filename: '[name].[hash].js',
-    publicPath: '/g/',
+    publicPath: '/docs/',
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),

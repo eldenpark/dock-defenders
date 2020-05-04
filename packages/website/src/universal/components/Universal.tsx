@@ -1,8 +1,8 @@
 import { compose } from 'redux';
 import styled, { createGlobalStyle } from 'styled-components';
-import { hot } from 'react-hot-loader/root';
 import React from 'react';
 
+import App from '@@src/universal/components/App';
 import color from '@@src/universal/styles/color';
 import ErrorBoundary from '@@src/universal/components/ErrorBoundary';
 import normalize from '@@src/universal/styles/normalize';
@@ -73,14 +73,13 @@ const Universal: React.FC<any> = () => {
       <StyledUniversal>
         <Normalize />
         <GlobalStyle />
-        123
+        <App />
       </StyledUniversal>
     </ErrorBoundary>
   );
 };
 
 export default compose(
-  hot,
 )(Universal);
 
 declare global {

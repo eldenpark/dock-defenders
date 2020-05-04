@@ -1,4 +1,3 @@
-import { hot } from 'react-hot-loader';
 import React from 'react';
 
 import { BrowserRouter } from 'react-router-dom';
@@ -19,4 +18,4 @@ const ClientApp: React.FC = () => {
   );
 };
 
-export default hot(module)(ClientApp);
+export default ClientApp;

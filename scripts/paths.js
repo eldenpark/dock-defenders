@@ -18,7 +18,7 @@ const ROOT_PATH = (function requireProjectRoot() {
 module.exports = {
   build: path.resolve(ROOT_PATH, '.build'),
   data: path.resolve(ROOT_PATH, 'data'),
-  dist: path.resolve(ROOT_PATH, 'g'),
+  dist: path.resolve(ROOT_PATH, 'docs'),
   root: ROOT_PATH,
   src: path.resolve(ROOT_PATH, 'src'),
 };

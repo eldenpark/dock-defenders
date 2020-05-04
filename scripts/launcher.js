@@ -12,7 +12,7 @@ const log = logger('[dock-defenders]');
 const outputPath = path.resolve(__dirname, '../output');
 
 const processDefinitions = {
-  'audio:merge_and_divide': proc(
+  'audio-merge-and-divide': proc(
     'sh',
     [
       './launch.sh',
@@ -23,7 +23,7 @@ const processDefinitions = {
       stdio: 'inherit',
     },
   ),
-  'audio:spectrogram': proc(
+  'audio-spectrogram': proc(
     'python3',
     [
       './app.py',
@@ -34,7 +34,33 @@ const processDefinitions = {
       stdio: 'inherit',
     },
   ),
-  websiteDev: proc(
+  'image-extractor': proc(
+    'sh',
+    [
+      './launch.sh',
+      ...argv._,
+    ],
+    {
+      cwd: './packages/image-extractor',
+      stdio: 'inherit',
+    },
+  ),
+  'model-simulator': proc(
+    'node',
+    [
+      'app.js',
+      ...argv._,
+    ],
+    {
+      cwd: `./packages/model-simulator`,
+      env: {
+        NODE_ENV: 'development',
+        ...processEnv,
+      },
+      stdio: 'inherit',
+    },
+  ),
+  'website-dev': proc(
     'node',
     [
       './scripts/launch.js',
@@ -49,7 +75,7 @@ const processDefinitions = {
       stdio: 'inherit',
     },
   ),
-  websiteEject: proc(
+  'website-eject': proc(
     'node',
     [
       './scripts/launch.js',
@@ -67,7 +93,7 @@ const processDefinitions = {
 };
 
 const processGroupDefinitions = {
-  default: ['websiteDev'],
+  default: ['website-dev'],
 };
 
 function launcher() {

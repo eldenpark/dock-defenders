@@ -20,7 +20,7 @@ const config = {
     chunkFilename: 'chunk.[chunkhash].js',
     filename: '[name].[chunkhash].js',
     path: process.env.DIST_PATH,
-    publicPath: '/g/',
+    publicPath: '/docs/',
   },
 };
 

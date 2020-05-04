@@ -1,37 +1,22 @@
 {
   "name": "dock-defender",
   "scripts": {
-    "dev": "node ./scripts/launcher.js --process websiteDev",
-    "eject": "node ./scripts/launcher.js --process websiteEject",
+    "audio-merge-and-divide": "node ./scripts/launcher.js --operation audio",
+    "dev": "node ./scripts/launcher.js --process website-dev",
+    "eject": "node ./scripts/launcher.js --process website-eject",
     "eslint": "npx eslint . --ext .ts,.tsx,.js,.jsx",
+    "image-extractor": "node ./scripts/launcher.js --process image-extractor",
     "launch": "node ./scripts/launch.js",
     "lerna": "npx lerna",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "audio:merge_and_divide": "node ./scripts/launcher.js --operation audio"
+    "model-simulator": "node ./scripts/launcher.js --process model-simulator",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "url",
     "url": "git+https://github.com/eldeni/dock-defender.git"
   },
   "author": "Dock Defenders",
-  "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "^1.2.28",
-    "@fortawesome/free-brands-svg-icons": "^5.13.0",
-    "@fortawesome/react-fontawesome": "^0.1.9",
-    "axios": "^0.18.0",
-    "babel-polyfill": "^6.26.0",
-    "chalk": "^3.0.0",
-    "express": "^4.17.1",
-    "express-isomorphic": "^0.37.0",
-    "express-isomorphic-extension": "^0.37.0",
-    "html-minifier": "^3.5.21",
-    "jege": "^0.5.1",
-    "react": "^16.12.0",
-    "react-dom": "npm:@hot-loader/react-dom",
-    "react-router-dom": "^5.1.2",
-    "redux": "^4.0.5",
-    "styled-components": "^5.0.1"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@babel/core": "^7.9.0",
     "@babel/plugin-proposal-class-properties": "^7.8.3",
@@ -69,7 +54,6 @@
     "mini-css-extract-plugin": "^0.9.0",
     "objekt": "^0.1.0",
     "process-launch": "^0.6.1",
-    "react-hot-loader": "^4.12.20",
     "showdown": "^1.9.1",
     "typescript": "^3.8.3",
     "webpack": "^4.35.0",

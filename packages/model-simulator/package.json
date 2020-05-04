@@ -1,0 +1,9 @@
+{
+  "name": "model-simulator",
+  "version": "0.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "@google-cloud/automl": "^2.0.0"
+  }
+}
