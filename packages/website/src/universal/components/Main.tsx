@@ -4,56 +4,64 @@ import axios from 'axios';
 import React from 'react';
 import styled from 'styled-components';
 
-// import About from '@@src/universal/components/About';
 import Control from '@@src/universal/components/Control';
-import {
-  FileMap,
-  FormType,
-} from '@@src/universal/components/types';
 import { log } from '@@src/universal/modules/Logger';
-import pregeneratedData from '@@src/universal/pregeneratedData';
-import Row from '@@src/universal/components/Row';
+import Spectrogram from '@@src/universal/components/Spectrogram';
+import StatusLog from '@@src/universal/components/StatusLog';
+import Video from '@@src/universal/components/Video';
+
+const simulatedData = process.env.SIMULATED_DATA as any;
 
 const StyledMain = styled.div({
-  width: 650,
+  '& > div': {
+    marginBottom: 42,
+  }
+});
+
+const FirstRow = styled.div({
+  display: 'flex',
+  justifyContent: 'center',
+});
+
+const SecondRow = styled.div({
+  display: 'flex',
 });
 
 const Main = () => {
-  React.useEffect(() => {
-    console.log('Main(): useEffect(): main is rendered');
-    const form = document.getElementById('form') as FormType;
-    form.sources = [];
-    form.labels = [];
-  }, []);
-
   const startStopState = React.useRef<any>('Start');
   const [, updateState] = React.useState();
   const setStartStopState = React.useCallback((nextState) => {
     startStopState.current = nextState;
     updateState({});
   }, []);
-  const [classificationIsReady, setClassificationIsReady] = React.useState(false);
 
+  const videoRef = React.useRef(null);
+  const logData = React.useRef([]);
   const handleClickSubmit = React.useCallback(createHandleClickSubmit(
-    setClassificationIsReady,
+    logData,
+    updateState,
     setStartStopState,
     startStopState,
+    videoRef,
   ), [startStopState]);
 
   return (
     <StyledMain>
-      <form id="form">
-        <Row
-          itemId="0"
-          pregeneratedData={pregeneratedData[0]}
+      <FirstRow>
+        <Video
+          videoRef={videoRef}
         />
+      </FirstRow>
+      <SecondRow>
+        <Spectrogram />
+        <StatusLog logData={logData}/>
+      </SecondRow>
+      <div>
         <Control
-          classificationIsReady={classificationIsReady}
-          handleClickSubmit={handleClickSubmit}
-          startStopState={startStopState}
-        />
-      </form>
-      {/* <About /> */}
+        handleClickSubmit={handleClickSubmit}
+        startStopState={startStopState}
+      />
+      </div>
     </StyledMain>
   );
 };
@@ -61,14 +69,34 @@ const Main = () => {
 export default Main;
 
 function createHandleClickSubmit(
-  setClassificationIsReady,
+  logData,
+  updateState,
   setStartStopState,
   startStopState: { current: string },
+  videoRef,
 ) {
   const file = undefined;
 
   return () => {
-    console.log('createHandleclickSubmit(): startStop: %s', startStopState.current);
+    const timer = setInterval(updateLog, 1000);
+    let tick = 0;
+
+    function updateLog() {
+      log('updateLog(), simulatedData: %o', simulatedData);
+
+      if (tick === simulatedData.length) {
+        clearInterval(timer);
+        return;
+      } else {
+        console.log(3);
+        tick += 1;
+        logData.current.push(Date.now());
+        updateState({});
+      }
+    }
+
+    log('createHandleclickSubmit(): startStop: %s', startStopState.current);
+    log('simulatedData: %j', process.env.SIMULATED_DATA);
 
     if (startStopState.current === 'Start') {
       setStartStopState('Stop');
@@ -82,11 +110,8 @@ function createHandleClickSubmit(
         })
           .then((response) => {
             const { data } = response;
+            console.log(1, data);
             // const _pregeneratedData = pregeneratedData[i];
-            setClassificationIsReady(true);
-
-            // console.log('createHandleclickSubmit(): NODE_ENV: production, i: %s, including data: %o, pregeneratedData: %o', data, _pregeneratedData);
-
             const label: any = document.getElementById(`classification`);
             if (label !== null) {
               // const { classification, displayName } = _pregeneratedData.classify;
@@ -96,11 +121,14 @@ function createHandleClickSubmit(
             }
 
             drawSpectrogram(data, canvas, startStopState);
+            const video = videoRef.current;
+            setTimeout(() => {
+              video.play();
+            }, 300);
           });
       }
     } else {
       setStartStopState('Start');
-      setClassificationIsReady(false);
 
       console.log('createHandleclickSubmit(): stop, file: %o', file);
       setTimeout(() => {
@@ -135,6 +163,9 @@ function drawSpectrogram(
   analyser.smoothingTimeConstant = 0.0;
   analyser.fftSize = 256;
 
+  const gainNode = audioContext.createGain();
+  gainNode.gain.value = 0.0;
+
   const bufferLength = analyser.frequencyBinCount;
   const eightBufferLength = 8 * bufferLength + 1;
   const dataArray = new Uint8Array(bufferLength);
@@ -156,6 +187,8 @@ function drawSpectrogram(
   }
 
   const source = audioContext.createBufferSource();
+  source.connect(gainNode);
+  gainNode.connect(audioContext.destination);
 
   const reader = new FileReader();
   reader.onload = (ev: any) => {
@@ -164,7 +197,6 @@ function drawSpectrogram(
       (_buffer) => {
         source.buffer = _buffer;
         source.connect(analyser);
-        source.connect(audioContext.destination);
         source.start(0);
         draw();
       },

@@ -3,10 +3,6 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import {
-  FormType,
-} from '@@src/universal/components/types';
-
 const StyledControl = styled.div({
   display: 'flex',
   marginTop: 30,
@@ -39,10 +35,6 @@ const Submit = styled(Button)({
   width: 120,
 });
 
-const Left = styled.div({
-  width: 220,
-});
-
 const Right = styled.div({
   display: 'flex',
   '& > *': {
@@ -51,37 +43,17 @@ const Right = styled.div({
 });
 
 const Control: React.FC<any> = ({
-  classificationIsReady,
   handleClickSubmit,
   startStopState,
 }) => {
-  const handleClickButton = React.useCallback((e, label) => {
-    const form = document.getElementById('form') as FormType;
-    const index = form.labels.indexOf(label);
-    console.log('Control(): only playing index: %s, label: %s, sources: %o, labels: %o', index, label, form.sources, form.labels);
-
-    form.sources.forEach((source, idx) => {
-      if (idx !== index) {
-        console.log('Control(): source at: %s will stop', idx);
-        source.stop(0);
-      } else {
-        console.log('Control(): found the source of index: %s', idx);
-        const label: any = document.getElementById(`classification-${idx}`);
-        label.classList.add('focus');
-      }
-    });
-  }, []);
-
   return (
     <StyledControl>
-      <Left>
-        <Submit
-          onClick={handleClickSubmit}
-          type="button"
-        >
-          {startStopState.current === 'Start' ? 'Start' : 'Start Over'}
-        </Submit>
-      </Left>
+      <Submit
+        onClick={handleClickSubmit}
+        type="button"
+      >
+        {startStopState.current === 'Start' ? 'Start' : 'Start Over'}
+      </Submit>
     </StyledControl>
   );
 };

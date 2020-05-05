@@ -54,7 +54,10 @@ const processDefinitions = {
     {
       cwd: `./packages/model-simulator`,
       env: {
+        IMAGE_EXTRACT_PATH: path.resolve(outputPath, 'image-extract'),
         NODE_ENV: 'development',
+        SIMULATED_DATA_PATH: path.resolve(outputPath, 'simulated-data'),
+        SPECTROGRAM_PATH: path.resolve(outputPath, 'spectrogram'),
         ...processEnv,
       },
       stdio: 'inherit',
