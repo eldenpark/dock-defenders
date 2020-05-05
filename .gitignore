@@ -146,4 +146,8 @@ output/simulated-data/*
 output/spectrogram/*
 !output/spectrogram/.gitkeep
 
+!output/synthesized-sound
+output/synthesized-sound/*
+!output/synthesized-sound/.gitkeep
+
 .build/

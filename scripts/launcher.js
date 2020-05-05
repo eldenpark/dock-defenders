@@ -12,28 +12,6 @@ const log = logger('[dock-defenders]');
 const outputPath = path.resolve(__dirname, '../output');
 
 const processDefinitions = {
-  'audio-merge-and-divide': proc(
-    'sh',
-    [
-      './launch.sh',
-      ...argv._,
-    ],
-    {
-      cwd: `./packages/sound-synthesizer`,
-      stdio: 'inherit',
-    },
-  ),
-  'audio-spectrogram': proc(
-    'python3',
-    [
-      './app.py',
-      outputPath,
-    ],
-    {
-      cwd: './packages/spectrogram-creator',
-      stdio: 'inherit',
-    },
-  ),
   'image-extractor': proc(
     'sh',
     [
@@ -60,6 +38,28 @@ const processDefinitions = {
         SPECTROGRAM_PATH: path.resolve(outputPath, 'spectrogram'),
         ...processEnv,
       },
+      stdio: 'inherit',
+    },
+  ),
+  'sound-synthesizer': proc(
+    'sh',
+    [
+      './launch.sh',
+      ...argv._,
+    ],
+    {
+      cwd: `./packages/sound-synthesizer`,
+      stdio: 'inherit',
+    },
+  ),
+  'spectrogram-creator': proc(
+    'python3',
+    [
+      './app.py',
+      outputPath,
+    ],
+    {
+      cwd: './packages/spectrogram-creator',
       stdio: 'inherit',
     },
   ),
@@ -108,19 +108,10 @@ function launcher() {
       processGroupDefinitions,
     });
 
-    if (argv.operation === undefined) {
-      Launcher.run({
-        process: argv.process,
-        processGroup: argv.processGroup,
-      });
-    } else {
-      Launcher.runInSequence({
-        order: [
-          'audio:merge_and_divide',
-          'audio:spectrogram',
-        ],
-      });
-    }
+    Launcher.run({
+      process: argv.process,
+      processGroup: argv.processGroup,
+    });
   } catch (err) {
     log('launcher(): Error reading file', err);
   }

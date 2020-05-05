@@ -1,7 +1,6 @@
 {
   "name": "dock-defender",
   "scripts": {
-    "audio-merge-and-divide": "node ./scripts/launcher.js --operation audio",
     "dev": "node ./scripts/launcher.js --process website-dev",
     "eject": "node ./scripts/launcher.js --process website-eject",
     "eslint": "npx eslint . --ext .ts,.tsx,.js,.jsx",
@@ -9,6 +8,8 @@
     "launch": "node ./scripts/launch.js",
     "lerna": "npx lerna",
     "model-simulator": "node ./scripts/launcher.js --process model-simulator",
+    "spectrogram-creator": "node ./scripts/launcher.js --process spectrogram-creator",
+    "sound-synthesizer": "node ./scripts/launcher.js --process sound-synthesizer",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

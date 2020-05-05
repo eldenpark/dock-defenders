@@ -56,7 +56,7 @@ async function simulate(model, inputPath, resultPath) {
     }
   }
 
-  const resultFilePath = path.resolve(resultPath, `${model.modelId}-${Date.now()}.json`);
+  const resultFilePath = path.resolve(resultPath, `${Date.now()}_${model.modelId}.json`);
   fs.writeFileSync(resultFilePath, JSON.stringify(result));
 }
 

@@ -31,13 +31,12 @@ cleanOutputPath() {
   done
 }
 
-cleanOutputPath
-
 takeScreenShots() {
   printf "takeScreenShots(): start\n"
-  command="ffmpeg -i $video_file_path -vf fps=1 $output_path/img_%03d.jpg"
+  command="ffmpeg -i $video_file_path -vf fps=1 $output_path/${timestamp}_%03d.jpg"
   printf "takeScreenShots(): take screen shots command: %s\n" "$extract_command";
   $command;
 }
 
+cleanOutputPath
 takeScreenShots
