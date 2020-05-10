@@ -15,7 +15,7 @@ const models = {
   },
   video: {
     location: 'us-central1',
-    modelId: 'IOD3283753049004179456',
+    modelId: 'IOD5458710194047418368',
     projectId: '1079667904118',
   },
 };
@@ -26,7 +26,7 @@ async function wait(ms) {
   });
 }
 
-async function simulate(model, inputPath, resultPath) {
+async function simulate(model, inputPath) {
   const result = [];
   const files = fs.readdirSync(inputPath);
 
@@ -52,21 +52,30 @@ async function simulate(model, inputPath, resultPath) {
         payload: response.payload,
       });
 
-      await wait(300);
+      await wait(1000);
     }
   }
+  return result;
+}
 
-  const resultFilePath = path.resolve(resultPath, `${Date.now()}_${model.modelId}.json`);
-  fs.writeFileSync(resultFilePath, JSON.stringify(result));
+function writeResult(resultPath, content) {
+  const resultFilePath = path.resolve(resultPath, `sd_${Date.now()}.json`);
+  log('simulate(): finished getting data, writing at: %s', resultFilePath);
+  fs.writeFileSync(resultFilePath, JSON.stringify(content));
 }
 
 async function main() {
   const {
+    IMAGE_EXTRACT_PATH,
     SIMULATED_DATA_PATH,
     SPECTROGRAM_PATH,
   } = process.env;
-  await simulate(models.audio, SPECTROGRAM_PATH, SIMULATED_DATA_PATH);
-  // simulate('video');
+  const audio = await simulate(models.audio, SPECTROGRAM_PATH);
+  const video = await simulate(models.video, IMAGE_EXTRACT_PATH);
+  writeResult(SIMULATED_DATA_PATH, {
+    audio,
+    video,
+  });
 }
 
 if (require.main === module) {

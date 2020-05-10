@@ -23,28 +23,22 @@ const Button = styled.button<any>(({
   opacity: disabled ? 0.7 : 1,
   outline: 0,
   width: 100,
-  '&:hover': {
-    fontWeight: 800,
-    transform: disabled ? 'none' : 'translate(1px,1px)',
-  },
 }));
 
 const Submit = styled(Button)({
+  '&:hover': {
+    backgroundColor: '#ededed',
+    color: 'black',
+  },
   backgroundColor: '#3c3938',
   color: 'white',
+  transition: 'all 0.5s ease',
   width: 120,
-});
-
-const Right = styled.div({
-  display: 'flex',
-  '& > *': {
-    marginRight: 19,
-  },
 });
 
 const Control: React.FC<any> = ({
   handleClickSubmit,
-  startStopState,
+  launchState,
 }) => {
   return (
     <StyledControl>
@@ -52,7 +46,7 @@ const Control: React.FC<any> = ({
         onClick={handleClickSubmit}
         type="button"
       >
-        {startStopState.current === 'Start' ? 'Start' : 'Start Over'}
+        {launchState.current === 0 ? 'Simulate' : 'Start Over'}
       </Submit>
     </StyledControl>
   );

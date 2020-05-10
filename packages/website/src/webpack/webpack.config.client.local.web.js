@@ -1,4 +1,3 @@
-const fs = require('fs');
 const { logger } = require('jege/server');
 const merge = require('webpack-merge');
 const path = require('path');
@@ -8,13 +7,13 @@ const webpackConfigClientWeb = require('./webpack.config.client.web');
 
 const log = logger('[website]');
 
-let simulatedDataAudio;
-let simulatedDataVideo;
+let simulatedData;
 
 try {
-  simulatedDataAudio = require(process.env.SIMULATED_DATA_PATH);
+  simulatedData = require(process.env.SIMULATED_DATA_PATH);
 } catch (err) {
   log('webpack.config.client.local.web.js: simulated-data path is not correctly given: %s', process.env.SIMULATED_DATA_PATH);
+  throw new Error('process.env.SIMULATED_DATA_PATH is not defined');
 }
 
 const config = {
@@ -38,7 +37,7 @@ const config = {
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NamedModulesPlugin(),
     new webpack.DefinePlugin({
-      'process.env.SIMULATED_DATA': JSON.stringify(simulatedDataAudio),
+      'process.env.SIMULATED_DATA': JSON.stringify(simulatedData),
     }),
   ],
 };

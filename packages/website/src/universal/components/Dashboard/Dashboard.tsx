@@ -4,102 +4,145 @@ import axios from 'axios';
 import React from 'react';
 import styled from 'styled-components';
 
-import Control from '@@src/universal/components/Control';
+import Control from './Control';
+import Info from './Info';
 import { log } from '@@src/universal/modules/Logger';
-import Spectrogram from '@@src/universal/components/Spectrogram';
-import StatusLog from '@@src/universal/components/StatusLog';
-import Video from '@@src/universal/components/Video';
+import Spectrogram from './Spectrogram';
+import StatusLog from './StatusLog';
+import Video from './Video';
 
-const simulatedData = process.env.SIMULATED_DATA as any;
-
-const StyledMain = styled.div({
-  '& > div': {
-    marginBottom: 42,
-  }
+const StyledDashboard = styled.div({
+  backgroundColor: '#121111',
+  color: 'white',
+  fontFamily: 'Helvetica, Arial, "Sans-Serif"',
+  padding: '10 10',
 });
 
-const FirstRow = styled.div({
+const DashboardBody = styled.div({
   display: 'flex',
   justifyContent: 'center',
 });
 
-const SecondRow = styled.div({
+const Column = styled.div<any>(({
+  _width,
+}) => ({
+  '&:last-child': {
+    marginLeft: 10,
+  },
+  '&>div': {
+    backgroundColor: '#1b1b1b',
+    borderRadius: 2,
+    flexGrow: 0,
+    padding: 8,
+    width: _width,
+  },
+  '&>div:not(:first-child)': {
+    marginTop: 10,
+  },
+  alignItems: 'center',
   display: 'flex',
-});
+  flexDirection: 'column',
+  flexGrow: 0,
+  // flexBasis: _width || 'auto',
+  // width: _width,
+}))
 
-const Main = () => {
-  const startStopState = React.useRef<any>('Start');
+const Main = ({
+  simulatedData,
+}) => {
+  const launchState = React.useRef<any>(0);
   const [, updateState] = React.useState();
-  const setStartStopState = React.useCallback((nextState) => {
-    startStopState.current = nextState;
+  const setLaunchState = React.useCallback((nextState) => {
+    launchState.current = nextState;
     updateState({});
   }, []);
 
   const videoRef = React.useRef(null);
-  const logData = React.useRef([]);
-  const handleClickSubmit = React.useCallback(createHandleClickSubmit(
-    logData,
+  const dashboardData = React.useRef({
+    audio: {},
+    displayTime: '00:00',
+    targetLabel: 'drone',
+    tick: 0,
+    video: {},
+  });
+  const handleClickSubmit = React.useCallback(createHandleClickSubmit({
+    launchState,
+    dashboardData,
+    setLaunchState,
+    simulatedData,
     updateState,
-    setStartStopState,
-    startStopState,
     videoRef,
-  ), [startStopState]);
+  }), [launchState, setLaunchState]);
 
   return (
-    <StyledMain>
-      <FirstRow>
-        <Video
-          videoRef={videoRef}
-        />
-      </FirstRow>
-      <SecondRow>
-        <Spectrogram />
-        <StatusLog logData={logData}/>
-      </SecondRow>
+    <StyledDashboard>
+      <DashboardBody>
+        <Column _width={440}>
+          <Video
+            dashboardData={dashboardData.current}
+            videoRef={videoRef}
+          />
+          <StatusLog
+            dashboardData={dashboardData.current}
+            type="video"
+          />
+        </Column>
+        <Column _width={210}>
+          <Info displayTime={dashboardData.current.displayTime} />
+          <Spectrogram />
+          {/* <StatusLog/> */}
+        </Column>
+      </DashboardBody>
       <div>
         <Control
-        handleClickSubmit={handleClickSubmit}
-        startStopState={startStopState}
-      />
+          handleClickSubmit={handleClickSubmit}
+          launchState={launchState}
+        />
       </div>
-    </StyledMain>
+    </StyledDashboard>
   );
 };
 
 export default Main;
 
-function createHandleClickSubmit(
-  logData,
+function createHandleClickSubmit({
+  dashboardData,
+  launchState,
+  setLaunchState,
+  simulatedData,
   updateState,
-  setStartStopState,
-  startStopState: { current: string },
   videoRef,
-) {
-  const file = undefined;
-
+}) {
   return () => {
+    const simulatedDataLength = Math.max(simulatedData.audio.lengh, simulatedData.video.length);
     const timer = setInterval(updateLog, 1000);
-    let tick = 0;
+    let audioIdx = 0;
+    let videoIdx = 0;
+
+    log('createHandleClickSubmit(): launchState: %s, simulatedData: %o', launchState.current, simulatedData);
 
     function updateLog() {
-      log('updateLog(), simulatedData: %o', simulatedData);
+      const currentDashboardData = dashboardData.current;
 
-      if (tick === simulatedData.length) {
+      log('updateLog(), previousTick: %s, videoIdx: %s', currentDashboardData.tick, videoIdx);
+
+      if (currentDashboardData.tick === simulatedDataLength || launchState.current === 0) {
         clearInterval(timer);
         return;
       } else {
-        console.log(3);
-        tick += 1;
-        logData.current.push(Date.now());
+        currentDashboardData.tick += 1;
+        currentDashboardData.displayTime = makeSecondDisplayable(currentDashboardData.tick);
+        currentDashboardData.video = simulatedData.video[videoIdx];
+        videoIdx += 1;
+
         updateState({});
       }
     }
 
-    log('createHandleclickSubmit(): startStop: %s', startStopState.current);
-    log('simulatedData: %j', process.env.SIMULATED_DATA);
+    const video = videoRef.current;
 
-    if (startStopState.current === 'Start') {
-      setStartStopState('Stop');
+    if (launchState.current === 0) {
+      setLaunchState(1);
       const canvas: any = document.getElementById(`canvas`);
       const fileUrl = '/docs/assets/quadcopter_002_audio_merged.mp3';
       log('createHandleClickSubmit(): fileUrl: %s', fileUrl);
@@ -120,22 +163,22 @@ function createHandleClickSubmit(
               // label.innerHTML = newLabel;
             }
 
-            drawSpectrogram(data, canvas, startStopState);
-            const video = videoRef.current;
+            drawSpectrogram(data, canvas, launchState);
             setTimeout(() => {
               video.play();
             }, 300);
           });
       }
     } else {
-      setStartStopState('Start');
+      setLaunchState(0);
 
-      console.log('createHandleclickSubmit(): stop, file: %o', file);
+      console.log('createHandleclickSubmit(): stop');
       setTimeout(() => {
         const canvas = document.getElementById(`canvas`) as HTMLCanvasElement;
         const context = canvas.getContext('2d')!;
         context.clearRect(0, 0, canvas.width, canvas.height);
-      }, 200);
+        video.pause();
+      }, 300);
     }
   };
 }
@@ -143,7 +186,7 @@ function createHandleClickSubmit(
 function drawSpectrogram(
   file: Blob,
   canvasElement: HTMLCanvasElement,
-  startStopState,
+  launchState,
 ) {
   console.log('drawSpectrogram()');
 
@@ -156,7 +199,7 @@ function drawSpectrogram(
 
   const canvasWidth = canvasElement.width;
   const audioContext = new (window.AudioContext || window['webkitAudioContext'])();
-  const canvasContext = canvasElement.getContext('2d');
+  const canvasContext = canvasElement.getContext('2d') as CanvasRenderingContext2D;
 
   let x = 0;
   const analyser = audioContext.createAnalyser();
@@ -178,12 +221,12 @@ function drawSpectrogram(
   const imageDataFrame = canvasContext!.createImageData(2, canvasElement.height);
 
   for (let index = 0; index < imageDataFrame.data.length * 4; index += 8) {
-    imageDataFrame.data[index] = imageDataFrame.data[index + 6] = 0;
-
-    imageDataFrame.data[index + 3] =
-      imageDataFrame.data[index + 4] =
-      imageDataFrame.data[index + 5] =
-      imageDataFrame.data[index + 7] = 255;
+    imageDataFrame.data[index] = 0;
+    imageDataFrame.data[index + 3] = 255;
+    imageDataFrame.data[index + 4] = 255;
+    imageDataFrame.data[index + 5] = 255;
+    imageDataFrame.data[index + 6] = 0;
+    imageDataFrame.data[index + 7] = 255;
   }
 
   const source = audioContext.createBufferSource();
@@ -209,13 +252,15 @@ function drawSpectrogram(
   reader.readAsArrayBuffer(file);
 
   function draw() {
-    if (startStopState.current === 'Stop') {
+    if (launchState.current === 1) {
       requestAnimationFrame(draw);
     }
     analyser.getByteFrequencyData(dataArray);
 
     for (let index = 0, _o = eightBufferLength; index < bufferLength; ++index, _o -= 8) {
-      imageDataFrame.data[_o] = imageDataFrame.data[_o + 1] = dataArray[index] * 2;
+      imageDataFrame.data[_o - 1] = dataArray[index] * 2;
+      imageDataFrame.data[_o] = dataArray[index] * 2;
+      imageDataFrame.data[_o + 1] = dataArray[index] * 1;
     }
 
     canvasContext!.putImageData(imageDataFrame, x, 0);
@@ -226,4 +271,15 @@ function drawSpectrogram(
       x = 0;
     }
   }
+}
+
+function makeSecondDisplayable(tick) {
+  const minutes = Math.floor(tick / 60);
+  const seconds = tick - minutes * 60;
+  return str_pad_left(minutes, '0', 2) + ':' + str_pad_left(seconds, '0', 2);
+}
+
+function str_pad_left(string, pad, length) {
+  return (new Array(length + 1).join(pad) + string)
+    .slice(-length);
 }

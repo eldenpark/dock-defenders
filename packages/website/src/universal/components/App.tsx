@@ -2,10 +2,11 @@ import styled from 'styled-components';
 import React from 'react';
 
 // import About from '@@src/universal/components/About';
-import Main from '@@src/universal/components/Main';
+import Dashboard from '@@src/universal/components/Dashboard/Dashboard';
+
+const simulatedData = process.env.SIMULATED_DATA as any;
 
 const StyledApp = styled.div({
-  border: '1px solid gray',
   minHeight: '100vh',
   padding: '50px 0',
   width: 690,
@@ -14,7 +15,9 @@ const StyledApp = styled.div({
 const App = () => {
   return (
     <StyledApp>
-      <Main />
+      <Dashboard
+        simulatedData={simulatedData}
+      />
       {/* <About /> */}
     </StyledApp>
   );
