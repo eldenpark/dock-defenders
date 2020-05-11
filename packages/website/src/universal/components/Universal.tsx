@@ -3,6 +3,7 @@ import styled, { createGlobalStyle } from 'styled-components';
 import React from 'react';
 
 import App from '@@src/universal/components/App';
+import color from '@@src/universal/styles/color';
 import ErrorBoundary from '@@src/universal/components/ErrorBoundary';
 import normalize from '@@src/universal/styles/normalize';
 
@@ -35,6 +36,8 @@ const GlobalStyle = createGlobalStyle({
     padding: 0,
   },
   html: {
+    backgroundColor: color.htmlBackground,
+    color: color.htmlColor,
     fontFamily: '"Helvetica", "Arial", "sans-serif"',
     fontSize: 16,
     lineHeight: 1.51,
@@ -54,7 +57,6 @@ const GlobalStyle = createGlobalStyle({
 });
 
 const StyledUniversal = styled.div({
-  // fontSize: '1.34rem',
   minWidth: 318,
 });
 
@@ -72,9 +74,3 @@ const Universal: React.FC<any> = () => {
 
 export default compose(
 )(Universal);
-
-declare global {
-  interface Window {
-    SimpleMDE;
-  }
-}

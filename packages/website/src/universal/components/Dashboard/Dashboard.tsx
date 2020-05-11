@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 import axios from 'axios';
 import React from 'react';
 import styled from 'styled-components';
@@ -12,8 +10,10 @@ import Spectrogram from './Spectrogram';
 import StatusLog from './StatusLog';
 import Video from './Video';
 
+const publicPath = process.env.PUBLIC_PATH;
+
 const StyledDashboard = styled.div({
-  backgroundColor: '#121111',
+  backgroundColor: color.dashboardBackground,
   color: 'white',
   fontFamily: 'Helvetica, Arial, "Sans-Serif"',
   fontSize: '0.95em',
@@ -41,7 +41,7 @@ const Column = styled.div<any>(({
   display: 'flex',
   flexDirection: 'column',
   flexGrow: 0,
-}))
+}));
 
 const Dashboard = ({
   simulatedData,
@@ -67,8 +67,8 @@ const Dashboard = ({
     videoAcc: 0,
   });
   const handleClickSubmit = React.useCallback(createHandleClickSubmit({
-    launchState,
     dashboardData,
+    launchState,
     setLaunchState,
     simulatedData,
     spectrogramRef,
@@ -137,7 +137,6 @@ function createHandleClickSubmit({
 
       if (currentDashboardData.tick === simulatedDataLength || launchState.current === 0) {
         clearInterval(timer);
-        return;
       } else {
         currentDashboardData.tick += 1;
         currentDashboardData.displayTime = makeSecondDisplayable(currentDashboardData.tick);
@@ -169,7 +168,7 @@ function createHandleClickSubmit({
 
     if (launchState.current === 0) {
       setLaunchState(1);
-      const fileUrl = '/docs/assets/quadcopter_002_audio_merged.mp3';
+      const fileUrl = `/${publicPath}/assets/quadcopter_002_audio_merged.mp3`;
       log('createHandleClickSubmit(): fileUrl: %s', fileUrl);
 
       if (fileUrl !== null) {
@@ -178,15 +177,6 @@ function createHandleClickSubmit({
         })
           .then((response) => {
             const { data } = response;
-            // const _pregeneratedData = pregeneratedData[i];
-            const label: any = document.getElementById(`classification`);
-            if (label !== null) {
-              // const { classification, displayName } = _pregeneratedData.classify;
-              // const normalizedScore = (+classification.score * 100) / 100;
-              // const newLabel = `<b>${displayName}</b> (${normalizedScore.toFixed(5)}%)`;
-              // label.innerHTML = newLabel;
-            }
-
             drawSpectrogram(data, spectrogram, launchState);
             setTimeout(() => {
               video.play();
@@ -196,7 +186,7 @@ function createHandleClickSubmit({
     } else {
       setLaunchState(0);
 
-      console.log('createHandleclickSubmit(): stop');
+      log('createHandleclickSubmit(): stop');
       setTimeout(() => {
         const context = spectrogram.getContext('2d')!;
         context.clearRect(0, 0, spectrogram.width, spectrogram.height);
@@ -211,12 +201,12 @@ function drawSpectrogram(
   canvasElement: HTMLCanvasElement,
   launchState,
 ) {
-  console.log('drawSpectrogram()');
+  log('drawSpectrogram()');
 
   try {
-    new (window.AudioContext || window['webkitAudioContext'])();
+    new (window.AudioContext || window['webkitAudioContext'])(); // eslint-disable-line
   } catch (err) {
-    console.error('Audio API is not available');
+    log('Audio API is not available');
     return;
   }
 
@@ -267,7 +257,7 @@ function drawSpectrogram(
         draw();
       },
       (err) => {
-        console.log('drawSpectrogram(): erorr', err);
+        log('drawSpectrogram(): erorr', err);
       },
     );
   };
@@ -280,7 +270,7 @@ function drawSpectrogram(
     }
     analyser.getByteFrequencyData(dataArray);
 
-    for (let index = 0, _o = eightBufferLength; index < bufferLength; ++index, _o -= 8) {
+    for (let index = 0, _o = eightBufferLength; index < bufferLength; ++index, _o -= 8) { // eslint-disable-line
       imageDataFrame.data[_o - 1] = dataArray[index] * 2;
       imageDataFrame.data[_o] = dataArray[index] * 2;
       imageDataFrame.data[_o + 1] = dataArray[index] * 1;

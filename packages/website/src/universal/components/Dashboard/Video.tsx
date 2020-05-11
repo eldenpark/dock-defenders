@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import Card from './Card';
 import color from '@@src/universal/styles/color';
 
+const publicPath = process.env.PUBLIC_PATH;
+
 const StyledVideo = styled(Card)<any>(({
   isActive,
 }) => ({
@@ -83,7 +85,7 @@ const Video = ({
         <Meta>Sampling rate: 1Hz</Meta>
         <canvas ref={canvasRef} />
         <video ref={videoRef}>
-          <source src="/docs/assets/quadcopter_002_merged.mp4" type="video/mp4" />
+          <source src={`/${publicPath}/assets/quadcopter_002_merged.mp4`} type="video/mp4" />
           Your browser does not support the video tag.
         </video>
       </div>

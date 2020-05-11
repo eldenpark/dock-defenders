@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import Card from './Card';
 import color from '@@src/universal/styles/color';
 
+const publicPath = process.env.PUBLIC_PATH;
+
 const StyledSpectrogram = styled(Card)<any>(({
   isActive,
 }) => ({
@@ -84,7 +86,7 @@ const Spectrogram = ({
           alt="spectrogram"
           data-age={-1}
           key={audio.file}
-          src={`/docs/assets/spectrograms/${audio.file}`}
+          src={`/${publicPath}/assets/spectrograms/${audio.file}`}
         />,
       );
 

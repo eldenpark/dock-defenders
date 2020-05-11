@@ -1,20 +1,20 @@
 {
   "errors": [],
   "warnings": [
-    "entrypoint size limit: The following entrypoint(s) combined asset size exceeds the recommended limit (244 KiB). This can impact web performance.\nEntrypoints:\n  client (302 KiB)\n      chunk.f0fe68d56e7c4d6ad4fa.js\n      chunk.5c1b3bbd0d39acb3f697.js\n      client.0ecf8e1658f36bf71b74.js\n",
+    "entrypoint size limit: The following entrypoint(s) combined asset size exceeds the recommended limit (244 KiB). This can impact web performance.\nEntrypoints:\n  client (405 KiB)\n      chunk.4efc088932a558347fe3.js\n      chunk.4c0b5ca740031e163502.js\n      client.24b4dd29d2eacf6cf27c.js\n",
     "webpack performance recommendations: \nYou can limit the size of your bundles by using import() or require.ensure to lazy load some parts of your application.\nFor more info visit https://webpack.js.org/guides/code-splitting/"
   ],
-  "builtAt": 1589214306257,
+  "builtAt": 1589226921794,
   "assetsByChunkName": {
-    "vendors~client~react": "chunk.f0fe68d56e7c4d6ad4fa.js",
-    "client": "client.0ecf8e1658f36bf71b74.js",
-    "react": "react.d4b72cebc03c005c719b.js",
-    "vendors~client": "chunk.5c1b3bbd0d39acb3f697.js"
+    "vendors~client~react": "chunk.4efc088932a558347fe3.js",
+    "client": "client.24b4dd29d2eacf6cf27c.js",
+    "react": "react.586a2e6f7156724d320c.js",
+    "vendors~client": "chunk.4c0b5ca740031e163502.js"
   },
   "assets": [
     {
-      "name": "chunk.5c1b3bbd0d39acb3f697.js",
-      "size": 161690,
+      "name": "chunk.4c0b5ca740031e163502.js",
+      "size": 161687,
       "chunks": [
         3
       ],
@@ -27,7 +27,7 @@
       "emitted": true
     },
     {
-      "name": "chunk.f0fe68d56e7c4d6ad4fa.js",
+      "name": "chunk.4efc088932a558347fe3.js",
       "size": 129627,
       "chunks": [
         0
@@ -41,8 +41,8 @@
       "emitted": true
     },
     {
-      "name": "client.0ecf8e1658f36bf71b74.js",
-      "size": 17888,
+      "name": "client.24b4dd29d2eacf6cf27c.js",
+      "size": 123140,
       "chunks": [
         1
       ],
@@ -55,8 +55,8 @@
       "emitted": true
     },
     {
-      "name": "react.d4b72cebc03c005c719b.js",
-      "size": 1556,
+      "name": "react.586a2e6f7156724d320c.js",
+      "size": 1566,
       "chunks": [
         2
       ],
@@ -78,9 +78,9 @@
         1
       ],
       "assets": [
-        "chunk.f0fe68d56e7c4d6ad4fa.js",
-        "chunk.5c1b3bbd0d39acb3f697.js",
-        "client.0ecf8e1658f36bf71b74.js"
+        "chunk.4efc088932a558347fe3.js",
+        "chunk.4c0b5ca740031e163502.js",
+        "client.24b4dd29d2eacf6cf27c.js"
       ],
       "children": {},
       "childAssets": {}
@@ -91,8 +91,8 @@
         2
       ],
       "assets": [
-        "chunk.f0fe68d56e7c4d6ad4fa.js",
-        "react.d4b72cebc03c005c719b.js"
+        "chunk.4efc088932a558347fe3.js",
+        "react.586a2e6f7156724d320c.js"
       ],
       "children": {},
       "childAssets": {}
@@ -110,9 +110,9 @@
         "vendors~client~react"
       ],
       "files": [
-        "chunk.f0fe68d56e7c4d6ad4fa.js"
+        "chunk.4efc088932a558347fe3.js"
       ],
-      "hash": "f0fe68d56e7c4d6ad4fa",
+      "hash": "4efc088932a558347fe3",
       "siblings": [
         1,
         2,
@@ -127,14 +127,14 @@
       "rendered": true,
       "initial": true,
       "entry": true,
-      "size": 30366,
+      "size": 32853,
       "names": [
         "client"
       ],
       "files": [
-        "client.0ecf8e1658f36bf71b74.js"
+        "client.24b4dd29d2eacf6cf27c.js"
       ],
-      "hash": "0ecf8e1658f36bf71b74",
+      "hash": "24b4dd29d2eacf6cf27c",
       "siblings": [
         0,
         3
@@ -153,9 +153,9 @@
         "react"
       ],
       "files": [
-        "react.d4b72cebc03c005c719b.js"
+        "react.586a2e6f7156724d320c.js"
       ],
-      "hash": "d4b72cebc03c005c719b",
+      "hash": "586a2e6f7156724d320c",
       "siblings": [
         0
       ],
@@ -174,9 +174,9 @@
         "vendors~client"
       ],
       "files": [
-        "chunk.5c1b3bbd0d39acb3f697.js"
+        "chunk.4c0b5ca740031e163502.js"
       ],
-      "hash": "5c1b3bbd0d39acb3f697",
+      "hash": "4c0b5ca740031e163502",
       "siblings": [
         0,
         1

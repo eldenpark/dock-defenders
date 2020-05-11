@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import Card from './Card';
-// import color from '@@src/universal/styles/color';
+import color from '@@src/universal/styles/color';
 
 const StyledInfo = styled(Card)({
 });
@@ -15,13 +15,13 @@ const Time = styled.p({
 
 const Likelihood = styled.p({
   '& .high': {
-    color: 'red',
+    color: color.red,
   },
   '& .low': {
-    color: '#5cfd56',
+    color: color.lightGreen,
   },
   '& .medium': {
-    color: 'yellow',
+    color: color.yellow,
   },
   '&>span': {
     marginRight: '0.4em',

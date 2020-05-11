@@ -73,6 +73,7 @@ const processDefinitions = {
       cwd: `./packages/website`,
       env: {
         NODE_ENV: 'development',
+        PUBLIC_PATH: 'docs',
         ...processEnv,
       },
       stdio: 'inherit',
@@ -88,6 +89,7 @@ const processDefinitions = {
       cwd: `./packages/website`,
       env: {
         NODE_ENV: 'production',
+        PUBLIC_PATH: 'dock-defenders',
         ...processEnv,
       },
       stdio: 'inherit',
