@@ -1,54 +1,53 @@
-/* eslint-disable */
-
 import React from 'react';
 import styled from 'styled-components';
 
-const StyledStatusLog = styled.div({
-  flexGrow: 1,
-  height: 230,
-  overflow: 'scroll',
+import Card from './Card';
+import color from '@@src/universal/styles/color';
+
+const StyledStatusLog = styled(Card)<any>({
+  backgroundColor: color.darkGrey,
 });
 
 const StyledVideoLog = styled.div({
-  '& .target': {
-    color: 'red',
-  },
   '&>span': {
     marginRight: 5,
   },
-  fontSize: '0.8em',
+});
+
+const LogBody = styled.div({
+  height: 230,
+  overflow: 'scroll',
 });
 
 const DisplayName = styled.span<any>(({
   active,
 }) => ({
-  color: active ? '#59fff7' : 'inherit',
+  color: active ? color.magenta : 'inherit',
 }));
 
-const VideoLog: React.FC<any> = ({
+const LogItem: React.FC<any> = ({
   data,
   displayTime,
-  targetLabel,
+  isTargetFound,
+  type,
 }) => {
   const self = React.useRef(null) as any;
   const { payload = [] } = data;
-  let content;
+  let content = <span>nodrone</span>;
   if (payload.length > 0) {
     const { displayName } = payload[0];
-    const vertices = payload[0].imageObjectDetection?.boundingBox?.normalizedVertices.map((nVertices) => {
-      const x = round(nVertices.x, 5);
-      const y = round(nVertices.y, 5);
-      return <span key={nVertices.x + nVertices.y}>{`${x},${y}`}</span>
-    });
-    console.log(222);
+    const logBody = type === 'video'
+      ? getVideoLogBody(payload[0])
+      : getAudioLogBody(payload[0]);
     content = (
       <>
         <DisplayName
-          active={displayName === targetLabel}
-          key={displayName}>
+          active={isTargetFound}
+          key={displayName}
+        >
           {displayName}
         </DisplayName>
-        {vertices}
+        {logBody}
       </>
     );
   }
@@ -64,37 +63,52 @@ const VideoLog: React.FC<any> = ({
       <span>{displayTime}</span>
       {content}
     </StyledVideoLog>
-  )
+  );
 };
 
 const StatusLog: React.FC<any> = ({
   dashboardData,
+  title,
   type,
 }) => {
   const [, updateState] = React.useState();
+  const lastLogItemId = React.useRef(null);
   const memoizedLog = React.useRef<any[]>([]);
+
   React.useEffect(() => {
-    const { displayTime, targetLabel, tick, video } = dashboardData;
-    if (tick > 0) {
-      const element = type === 'video'
-        ? (
-          <VideoLog
-            data={video}
-            displayTime={displayTime}
-            key={displayTime}
-            targetLabel={targetLabel}
-          />
-        )
-        : (
-          <div></div>
-        );
-      memoizedLog.current.push(<div key={displayTime}>{element}</div>);
+    const {
+      audio,
+      displayTime,
+      isTargetFoundOnAudio,
+      isTargetFoundOnVideo,
+      tick,
+      video,
+    } = dashboardData;
+    const data = type === 'video' ? video : audio;
+    if (tick > 0 && lastLogItemId.current !== data.file) {
+      const element = (
+        <LogItem
+          data={data}
+          displayTime={displayTime}
+          isTargetFound={type === 'video' ? isTargetFoundOnVideo : isTargetFoundOnAudio}
+          key={displayTime}
+          type={type}
+        />
+      );
+      memoizedLog.current.push(
+        element,
+      );
+      lastLogItemId.current = data.file;
       updateState({});
     }
-  }, [memoizedLog, dashboardData.displayTime]);
+  }, [memoizedLog, dashboardData, dashboardData.displayTime, type]);
   return (
-    <StyledStatusLog>
-      {memoizedLog.current}
+    <StyledStatusLog
+      title={title}
+    >
+      <LogBody>
+        {memoizedLog.current}
+      </LogBody>
     </StyledStatusLog>
   );
 };
@@ -102,6 +116,20 @@ const StatusLog: React.FC<any> = ({
 export default StatusLog;
 
 function round(num, place) {
-  const power = Math.pow(10, place);
-  return Math.round(num * power) / power;
+  const power = 10 ** place;
+  return (Math.floor(num * power) / power).toFixed(place);
+}
+
+function getVideoLogBody(payload) {
+  const score = round(payload.imageObjectDetection?.score, 3);
+  const vertices = payload.imageObjectDetection?.boundingBox?.normalizedVertices.map((nVertices) => { // eslint-disable-line
+    const x = round(nVertices.x, 3);
+    const y = round(nVertices.y, 3);
+    return `${x},${y}`;
+  });
+  return `coord(${vertices.join('/')}) acc(${score})`;
+}
+
+function getAudioLogBody(payload) {
+  return `acc(${round(payload.classification.score, 3)})`;
 }

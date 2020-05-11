@@ -4,6 +4,7 @@ import axios from 'axios';
 import React from 'react';
 import styled from 'styled-components';
 
+import color from '@@src/universal/styles/color';
 import Control from './Control';
 import Info from './Info';
 import { log } from '@@src/universal/modules/Logger';
@@ -15,6 +16,7 @@ const StyledDashboard = styled.div({
   backgroundColor: '#121111',
   color: 'white',
   fontFamily: 'Helvetica, Arial, "Sans-Serif"',
+  fontSize: '0.95em',
   padding: '10 10',
 });
 
@@ -30,10 +32,6 @@ const Column = styled.div<any>(({
     marginLeft: 10,
   },
   '&>div': {
-    backgroundColor: '#1b1b1b',
-    borderRadius: 2,
-    flexGrow: 0,
-    padding: 8,
     width: _width,
   },
   '&>div:not(:first-child)': {
@@ -43,11 +41,9 @@ const Column = styled.div<any>(({
   display: 'flex',
   flexDirection: 'column',
   flexGrow: 0,
-  // flexBasis: _width || 'auto',
-  // width: _width,
 }))
 
-const Main = ({
+const Dashboard = ({
   simulatedData,
 }) => {
   const launchState = React.useRef<any>(0);
@@ -58,18 +54,24 @@ const Main = ({
   }, []);
 
   const videoRef = React.useRef(null);
+  const spectrogramRef = React.useRef(null);
   const dashboardData = React.useRef({
     audio: {},
+    audioAcc: 0,
     displayTime: '00:00',
+    isTargetFoundOnAudio: false,
+    isTargetFoundOnVideo: false,
     targetLabel: 'drone',
     tick: 0,
     video: {},
+    videoAcc: 0,
   });
   const handleClickSubmit = React.useCallback(createHandleClickSubmit({
     launchState,
     dashboardData,
     setLaunchState,
     simulatedData,
+    spectrogramRef,
     updateState,
     videoRef,
   }), [launchState, setLaunchState]);
@@ -84,13 +86,21 @@ const Main = ({
           />
           <StatusLog
             dashboardData={dashboardData.current}
+            title="Object detection log"
             type="video"
           />
         </Column>
         <Column _width={210}>
-          <Info displayTime={dashboardData.current.displayTime} />
-          <Spectrogram />
-          {/* <StatusLog/> */}
+          <Info dashboardData={dashboardData.current} />
+          <Spectrogram
+            dashboardData={dashboardData.current}
+            spectrogramRef={spectrogramRef}
+          />
+          <StatusLog
+            dashboardData={dashboardData.current}
+            title="Sound classification log"
+            type="audio"
+          />
         </Column>
       </DashboardBody>
       <div>
@@ -103,13 +113,14 @@ const Main = ({
   );
 };
 
-export default Main;
+export default Dashboard;
 
 function createHandleClickSubmit({
   dashboardData,
   launchState,
   setLaunchState,
   simulatedData,
+  spectrogramRef,
   updateState,
   videoRef,
 }) {
@@ -124,8 +135,6 @@ function createHandleClickSubmit({
     function updateLog() {
       const currentDashboardData = dashboardData.current;
 
-      log('updateLog(), previousTick: %s, videoIdx: %s', currentDashboardData.tick, videoIdx);
-
       if (currentDashboardData.tick === simulatedDataLength || launchState.current === 0) {
         clearInterval(timer);
         return;
@@ -133,17 +142,33 @@ function createHandleClickSubmit({
         currentDashboardData.tick += 1;
         currentDashboardData.displayTime = makeSecondDisplayable(currentDashboardData.tick);
         currentDashboardData.video = simulatedData.video[videoIdx];
+        currentDashboardData.isTargetFoundOnVideo = false;
+        if (simulatedData.video[videoIdx].payload.length > 0) {
+          const payload = simulatedData.video[videoIdx].payload[0];
+          currentDashboardData.isTargetFoundOnVideo = payload.displayName === 'drone';
+          currentDashboardData.videoAcc = round(payload.imageObjectDetection?.score, 3);
+        }
         videoIdx += 1;
+
+        if (currentDashboardData.tick % 5 === 1) {
+          currentDashboardData.audio = simulatedData.audio[audioIdx];
+          if (simulatedData.audio[audioIdx].payload.length > 0) {
+            const payload = simulatedData.audio[audioIdx].payload[0];
+            currentDashboardData.isTargetFoundOnAudio = payload.displayName === 'drone';
+            currentDashboardData.audioAcc = round(payload.classification.score, 3);
+          }
+          audioIdx += 1;
+        }
 
         updateState({});
       }
     }
 
     const video = videoRef.current;
+    const spectrogram = spectrogramRef.current;
 
     if (launchState.current === 0) {
       setLaunchState(1);
-      const canvas: any = document.getElementById(`canvas`);
       const fileUrl = '/docs/assets/quadcopter_002_audio_merged.mp3';
       log('createHandleClickSubmit(): fileUrl: %s', fileUrl);
 
@@ -153,7 +178,6 @@ function createHandleClickSubmit({
         })
           .then((response) => {
             const { data } = response;
-            console.log(1, data);
             // const _pregeneratedData = pregeneratedData[i];
             const label: any = document.getElementById(`classification`);
             if (label !== null) {
@@ -163,7 +187,7 @@ function createHandleClickSubmit({
               // label.innerHTML = newLabel;
             }
 
-            drawSpectrogram(data, canvas, launchState);
+            drawSpectrogram(data, spectrogram, launchState);
             setTimeout(() => {
               video.play();
             }, 300);
@@ -174,9 +198,8 @@ function createHandleClickSubmit({
 
       console.log('createHandleclickSubmit(): stop');
       setTimeout(() => {
-        const canvas = document.getElementById(`canvas`) as HTMLCanvasElement;
-        const context = canvas.getContext('2d')!;
-        context.clearRect(0, 0, canvas.width, canvas.height);
+        const context = spectrogram.getContext('2d')!;
+        context.clearRect(0, 0, spectrogram.width, spectrogram.height);
         video.pause();
       }, 300);
     }
@@ -282,4 +305,9 @@ function makeSecondDisplayable(tick) {
 function str_pad_left(string, pad, length) {
   return (new Array(length + 1).join(pad) + string)
     .slice(-length);
+}
+
+function round(num, place) {
+  const power = 10 ** place;
+  return (Math.floor(num * power) / power).toFixed(place);
 }

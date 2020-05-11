@@ -3,10 +3,8 @@ import styled, { createGlobalStyle } from 'styled-components';
 import React from 'react';
 
 import App from '@@src/universal/components/App';
-import color from '@@src/universal/styles/color';
 import ErrorBoundary from '@@src/universal/components/ErrorBoundary';
 import normalize from '@@src/universal/styles/normalize';
-import { w320 } from '@@src/universal/styles/media';
 
 const Normalize = createGlobalStyle`
   ${normalize}
@@ -37,10 +35,8 @@ const GlobalStyle = createGlobalStyle({
     padding: 0,
   },
   html: {
-    backgroundColor: color.htmlBackgroundColor,
-    color: color.htmlColor,
-    fontFamily: '"Source Serif Pro", "Work Sans", "Helvetica", "Arial", sans-serif;',
-    fontSize: 14,
+    fontFamily: '"Helvetica", "Arial", "sans-serif"',
+    fontSize: 16,
     lineHeight: 1.51,
   },
   input: {
@@ -58,13 +54,8 @@ const GlobalStyle = createGlobalStyle({
 });
 
 const StyledUniversal = styled.div({
-  display: 'flex',
-  fontSize: '1.34rem',
-  justifyContent: 'center',
+  // fontSize: '1.34rem',
   minWidth: 318,
-  ...w320({
-    fontSize: '1.25rem',
-  }),
 });
 
 const Universal: React.FC<any> = () => {

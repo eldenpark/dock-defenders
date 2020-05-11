@@ -1,7 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const StyledVideo = styled.div({
+import Card from './Card';
+import color from '@@src/universal/styles/color';
+
+const StyledVideo = styled(Card)<any>(({
+  isActive,
+}) => ({
   '& canvas': {
     height: 238.5,
     position: 'absolute',
@@ -12,7 +17,20 @@ const StyledVideo = styled.div({
     height: 238.5,
     width: 424,
   },
-  position: 'relative',
+  '&>div': {
+    position: 'relative',
+  },
+  backgroundColor: isActive ? color.paleMagenta : color.darkGrey,
+  transition: isActive ? 'none' : 'background-color 0.9s ease',
+}));
+
+const Meta = styled.div({
+  backgroundColor: '#0000007a',
+  fontSize: '0.7em',
+  left: 0,
+  padding: '1px 3px',
+  position: 'absolute',
+  top: 0,
 });
 
 const Video = ({
@@ -20,8 +38,10 @@ const Video = ({
   videoRef,
 }) => {
   const canvasRef = React.useRef(null);
+  const [isActive, setIsActive] = React.useState(false);
+
   React.useEffect(() => {
-    const { video } = dashboardData;
+    const { isTargetFoundOnVideo, video } = dashboardData;
     const { payload } = video;
     const canvas = canvasRef.current as any;
     const ctx = canvas.getContext('2d');
@@ -36,19 +56,37 @@ const Video = ({
       const dY = height * (normalizedVertices[1].y - normalizedVertices[0].y);
 
       ctx.beginPath();
-      ctx.strokeStyle = '#59fff7';
+      ctx.strokeStyle = color.magenta;
       ctx.lineWidth = 2;
       ctx.strokeRect(x, y, dX, dY);
     }
+
+    let timer;
+    if (isTargetFoundOnVideo) {
+      setIsActive(true);
+      timer = setTimeout(() => {
+        setIsActive(false);
+      }, 100);
+    }
+
+    return () => {
+      clearTimeout(timer);
+    };
   }, [dashboardData, dashboardData.displayTime, videoRef]);
 
   return (
-    <StyledVideo>
-      <canvas ref={canvasRef} />
-      <video ref={videoRef}>
-        <source src="/docs/assets/quadcopter_002_merged.mp4" type="video/mp4" />
-        Your browser does not support the video tag.
-      </video>
+    <StyledVideo
+      isActive={isActive}
+      title="Camera"
+    >
+      <div>
+        <Meta>Sampling rate: 1Hz</Meta>
+        <canvas ref={canvasRef} />
+        <video ref={videoRef}>
+          <source src="/docs/assets/quadcopter_002_merged.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      </div>
     </StyledVideo>
   );
 };

@@ -37,7 +37,7 @@ const makeHtml: MakeHtml<IsomorphicState> = async ({
   const isomorphicData = {
     builtAt,
   };
-  const staticContext: StaticContext = {};
+  const staticContext = {};
 
   const element = (
     <ServerApp
@@ -85,11 +85,10 @@ function template({
       gtag('config', 'UA-161485149-1');
     </script>
     <link rel="icon" type="image/x-icon" href="/g/favicon.ico">
-    <link href="https://fonts.googleapis.com/css?family=Source+Serif+Pro:400,600,700|Work+Sans:400,500,700,800,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
     <style>${fontAwesomeCss}</style>
     ${styledComponentsStyleElements}
     <script>window['ISOMORPHIC_DATA']=${JSON.stringify(isomorphicData)}</script>
-
     <title>Dock Defenders</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">

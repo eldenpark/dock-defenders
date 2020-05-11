@@ -2,7 +2,7 @@ import express from 'express';
 import ExpressIsomorphic, {
   Extend,
 } from 'express-isomorphic';
-import fs from 'fs';
+// import fs from 'fs';
 import http from 'http';
 import { logger } from 'jege/server';
 import path from 'path';
@@ -61,23 +61,8 @@ export default async function main() {
     log('productionServer listening on: %s', port);
   });
 
-  // const { createdFiles } = serverState.state;
-  // await ejectFiles(eject, port, createdFiles);
+  await eject({
+    filePath: path.resolve(processEnv.DIST_PATH!, 'index.html'),
+    requestUrl: `http://localhost:${port}/`,
+  });
 }
-
-// async function ejectFiles(eject, port, createdFiles) {
-//   createdFiles.map(async (file) => {
-//     const directoryPath = path.resolve(process.env.DIST_PATH!, file.category);
-//     if (!fs.existsSync(directoryPath)) {
-//       log('ejectFiles(): creating directory: %s', directoryPath);
-//       fs.mkdirSync(directoryPath);
-//     }
-//   });
-
-//   const processEnv = process.env;
-
-//   await eject({
-//     filePath: path.resolve(processEnv.ROOT_PATH!, 'index.html'),
-//     requestUrl: `http://localhost:${port}/`,
-//   });
-// }

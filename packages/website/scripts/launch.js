@@ -17,6 +17,7 @@ function launch() {
   if (process.env.NODE_ENV === 'production') {
     const buildTask = gulp.task('build');
     buildTask(() => {
+      log('launch(): build finished. launching...');
       const serverProd = require('../src/server/index.production').default;
       serverProd();
     });

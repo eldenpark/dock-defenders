@@ -124,8 +124,6 @@ $RECYCLE.BIN/
 
 # End of https://www.gitignore.io/api/sass,node,macos,windows,visualstudiocode
 
-docs/*
-!docs/.gitkeep
 build/*
 !build/.gitkeep
 data/*
