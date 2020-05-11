@@ -18,7 +18,9 @@ const StyledApp = styled.div({
 });
 
 const Warn = styled.div({
+  color: '#717171',
   fontSize: '0.8em',
+  fontWeight: 200,
   padding: '12px 0',
   textAlign: 'center',
 });
