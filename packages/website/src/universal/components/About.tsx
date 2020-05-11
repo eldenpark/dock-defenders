@@ -39,6 +39,10 @@ const About = () => {
         Dock Defenders
       </h1>
       <p>{content.class}</p>
+      <p>
+        Github repo:&nbsp;
+        <a href="https://github.com/eldeni/dock-defenders">https://github.com/eldeni/dock-defenders</a>
+      </p>
       <p>{content.intro}</p>
       <h2>Motivation</h2>
       <p>{content.motivation}</p>
