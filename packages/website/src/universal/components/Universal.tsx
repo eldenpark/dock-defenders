@@ -6,6 +6,7 @@ import App from '@@src/universal/components/App';
 import color from '@@src/universal/styles/color';
 import ErrorBoundary from '@@src/universal/components/ErrorBoundary';
 import normalize from '@@src/universal/styles/normalize';
+import { w320 } from '@@src/universal/styles/media';
 
 const Normalize = createGlobalStyle`
   ${normalize}
@@ -54,6 +55,11 @@ const GlobalStyle = createGlobalStyle({
     margin: 0,
     padding: 0,
   },
+  ...w320({
+    html: {
+      fontSize: 14,
+    },
+  }),
 });
 
 const StyledUniversal = styled.div({

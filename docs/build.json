@@ -1,13 +1,13 @@
 {
   "errors": [],
   "warnings": [
-    "entrypoint size limit: The following entrypoint(s) combined asset size exceeds the recommended limit (244 KiB). This can impact web performance.\nEntrypoints:\n  client (405 KiB)\n      chunk.4efc088932a558347fe3.js\n      chunk.4c0b5ca740031e163502.js\n      client.c8e431b2a0648e51c478.js\n",
+    "entrypoint size limit: The following entrypoint(s) combined asset size exceeds the recommended limit (244 KiB). This can impact web performance.\nEntrypoints:\n  client (406 KiB)\n      chunk.4efc088932a558347fe3.js\n      chunk.4c0b5ca740031e163502.js\n      client.0721b4b84daf1dfbbcc5.js\n",
     "webpack performance recommendations: \nYou can limit the size of your bundles by using import() or require.ensure to lazy load some parts of your application.\nFor more info visit https://webpack.js.org/guides/code-splitting/"
   ],
-  "builtAt": 1589229618309,
+  "builtAt": 1589231308239,
   "assetsByChunkName": {
     "vendors~client~react": "chunk.4efc088932a558347fe3.js",
-    "client": "client.c8e431b2a0648e51c478.js",
+    "client": "client.0721b4b84daf1dfbbcc5.js",
     "react": "react.586a2e6f7156724d320c.js",
     "vendors~client": "chunk.4c0b5ca740031e163502.js"
   },
@@ -41,8 +41,8 @@
       "emitted": true
     },
     {
-      "name": "client.c8e431b2a0648e51c478.js",
-      "size": 123628,
+      "name": "client.0721b4b84daf1dfbbcc5.js",
+      "size": 124101,
       "chunks": [
         1
       ],
@@ -80,7 +80,7 @@
       "assets": [
         "chunk.4efc088932a558347fe3.js",
         "chunk.4c0b5ca740031e163502.js",
-        "client.c8e431b2a0648e51c478.js"
+        "client.0721b4b84daf1dfbbcc5.js"
       ],
       "children": {},
       "childAssets": {}
@@ -127,14 +127,14 @@
       "rendered": true,
       "initial": true,
       "entry": true,
-      "size": 33717,
+      "size": 34495,
       "names": [
         "client"
       ],
       "files": [
-        "client.c8e431b2a0648e51c478.js"
+        "client.0721b4b84daf1dfbbcc5.js"
       ],
-      "hash": "c8e431b2a0648e51c478",
+      "hash": "0721b4b84daf1dfbbcc5",
       "siblings": [
         0,
         3

@@ -17,6 +17,7 @@ const StyledDashboard = styled.div({
   color: 'white',
   fontFamily: 'Helvetica, Arial, "Sans-Serif"',
   fontSize: '0.95em',
+  overflow: 'scroll',
   padding: '10 10',
 });
 
