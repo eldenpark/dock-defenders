@@ -1,19 +1,17 @@
-/* eslint-disable */
-
 import React from 'react';
 import styled from 'styled-components';
 
+import color from '@@src/universal/styles/color';
+
 const StyledControl = styled.div({
   display: 'flex',
-  marginTop: 30,
+  margin: '30px 0 10px',
 });
 
 const Button = styled.button<any>(({
-  bgColor,
   disabled,
 }) => ({
   alignItems: 'center',
-  backgroundColor: bgColor,
   borderRadius: 8,
   cursor: 'pointer',
   display: 'flex',
@@ -27,12 +25,12 @@ const Button = styled.button<any>(({
 
 const Submit = styled(Button)({
   '&:hover': {
-    backgroundColor: '#ededed',
+    backgroundColor: color.submitButtonHover,
     color: 'black',
   },
-  backgroundColor: '#3c3938',
+  backgroundColor: color.submitButton,
   color: 'white',
-  transition: 'all 0.5s ease',
+  transition: 'all 0.3s ease',
   width: 120,
 });
 

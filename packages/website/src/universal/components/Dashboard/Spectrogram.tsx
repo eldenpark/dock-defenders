@@ -48,6 +48,7 @@ const ImageContainer = styled.div({
 
 const Spectrogram = ({
   dashboardData,
+  launchState,
   spectrogramRef,
 }) => {
   const [isActive, setIsActive] = React.useState(false);
@@ -94,10 +95,15 @@ const Spectrogram = ({
       updateState({});
     }
 
+    if (lastInsertedFileId.current !== null && launchState === 0) {
+      images.current = [];
+      updateState({});
+    }
+
     return () => {
       clearTimeout(timer);
     };
-  }, [lastInsertedFileId, spectrogramRef, dashboardData, dashboardData.displayTime]);
+  }, [launchState, lastInsertedFileId, spectrogramRef, dashboardData, dashboardData.displayTime]);
 
   return (
     <StyledSpectrogram

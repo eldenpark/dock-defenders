@@ -17,6 +17,7 @@ const StyledVideoLog = styled.div({
 const LogBody = styled.div({
   height: 230,
   overflow: 'scroll',
+  scrollHehavior: 'smooth',
 });
 
 const DisplayName = styled.span<any>(({
@@ -29,9 +30,9 @@ const LogItem: React.FC<any> = ({
   data,
   displayTime,
   isTargetFound,
+  logBodyRef,
   type,
 }) => {
-  const self = React.useRef(null) as any;
   const { payload = [] } = data;
   let content = <span>nodrone</span>;
   if (payload.length > 0) {
@@ -54,12 +55,13 @@ const LogItem: React.FC<any> = ({
 
   React.useEffect(() => {
     if (payload.length > 0) {
-      self.current.scrollIntoView({ behavior: 'smooth' });
+      const logBody = logBodyRef.current;
+      logBody.scrollTop = logBody.scrollHeight - logBody.clientHeight;
     }
   });
 
   return (
-    <StyledVideoLog ref={self}>
+    <StyledVideoLog>
       <span>{displayTime}</span>
       {content}
     </StyledVideoLog>
@@ -68,12 +70,14 @@ const LogItem: React.FC<any> = ({
 
 const StatusLog: React.FC<any> = ({
   dashboardData,
+  launchState,
   title,
   type,
 }) => {
   const [, updateState] = React.useState();
   const lastLogItemId = React.useRef(null);
   const memoizedLog = React.useRef<any[]>([]);
+  const logBodyRef = React.useRef(null);
 
   React.useEffect(() => {
     const {
@@ -92,6 +96,7 @@ const StatusLog: React.FC<any> = ({
           displayTime={displayTime}
           isTargetFound={type === 'video' ? isTargetFoundOnVideo : isTargetFoundOnAudio}
           key={displayTime}
+          logBodyRef={logBodyRef}
           type={type}
         />
       );
@@ -101,12 +106,18 @@ const StatusLog: React.FC<any> = ({
       lastLogItemId.current = data.file;
       updateState({});
     }
-  }, [memoizedLog, dashboardData, dashboardData.displayTime, type]);
+
+    if (memoizedLog.current.length > 0 && launchState === 0) {
+      memoizedLog.current = [];
+      lastLogItemId.current = null;
+      updateState({});
+    }
+  }, [launchState, memoizedLog, dashboardData, dashboardData.displayTime, type]);
   return (
     <StyledStatusLog
       title={title}
     >
-      <LogBody>
+      <LogBody ref={logBodyRef}>
         {memoizedLog.current}
       </LogBody>
     </StyledStatusLog>

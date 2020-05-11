@@ -46,8 +46,8 @@ const Column = styled.div<any>(({
 const Dashboard = ({
   simulatedData,
 }) => {
-  const launchState = React.useRef<any>(0);
   const [, updateState] = React.useState();
+  const launchState = React.useRef<any>(0);
   const setLaunchState = React.useCallback((nextState) => {
     launchState.current = nextState;
     updateState({});
@@ -55,17 +55,7 @@ const Dashboard = ({
 
   const videoRef = React.useRef(null);
   const spectrogramRef = React.useRef(null);
-  const dashboardData = React.useRef({
-    audio: {},
-    audioAcc: 0,
-    displayTime: '00:00',
-    isTargetFoundOnAudio: false,
-    isTargetFoundOnVideo: false,
-    targetLabel: 'drone',
-    tick: 0,
-    video: {},
-    videoAcc: 0,
-  });
+  const dashboardData = React.useRef(getInitialDashboardData());
   const handleClickSubmit = React.useCallback(createHandleClickSubmit({
     dashboardData,
     launchState,
@@ -86,18 +76,23 @@ const Dashboard = ({
           />
           <StatusLog
             dashboardData={dashboardData.current}
+            launchState={launchState.current}
             title="Object detection log"
             type="video"
           />
         </Column>
         <Column _width={210}>
-          <Info dashboardData={dashboardData.current} />
+          <Info
+            dashboardData={dashboardData.current}
+          />
           <Spectrogram
             dashboardData={dashboardData.current}
+            launchState={launchState.current}
             spectrogramRef={spectrogramRef}
           />
           <StatusLog
             dashboardData={dashboardData.current}
+            launchState={launchState.current}
             title="Sound classification log"
             type="audio"
           />
@@ -191,6 +186,9 @@ function createHandleClickSubmit({
         const context = spectrogram.getContext('2d')!;
         context.clearRect(0, 0, spectrogram.width, spectrogram.height);
         video.pause();
+        video.currentTime = 0;
+        dashboardData.current = getInitialDashboardData();
+        updateState({});
       }, 300);
     }
   };
@@ -300,4 +298,18 @@ function str_pad_left(string, pad, length) {
 function round(num, place) {
   const power = 10 ** place;
   return (Math.floor(num * power) / power).toFixed(place);
+}
+
+function getInitialDashboardData() {
+  return {
+    audio: {},
+    audioAcc: 0,
+    displayTime: '00:00',
+    isTargetFoundOnAudio: false,
+    isTargetFoundOnVideo: false,
+    targetLabel: 'drone',
+    tick: 0,
+    video: {},
+    videoAcc: 0,
+  };
 }

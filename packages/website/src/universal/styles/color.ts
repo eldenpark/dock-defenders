@@ -8,6 +8,8 @@ const color = {
   paleGray: '#d7d7d7',
   paleMagenta: '#59fff7ba',
   red: 'red',
+  submitButton: '#6e7c66',
+  submitButtonHover: '#ededed',
   yellow: 'yellow',
 };
 
