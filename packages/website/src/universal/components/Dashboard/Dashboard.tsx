@@ -121,18 +121,29 @@ function createHandleClickSubmit({
   videoRef,
 }) {
   return () => {
-    const simulatedDataLength = Math.max(simulatedData.audio.lengh, simulatedData.video.length);
+    const simulatedDataLength = Math.max(simulatedData.audio.length, simulatedData.video.length);
     const timer = setInterval(updateLog, 1000);
     let audioIdx = 0;
     let videoIdx = 0;
+
+    const video = videoRef.current;
+    const spectrogram = spectrogramRef.current;
 
     log('createHandleClickSubmit(): launchState: %s, simulatedData: %o', launchState.current, simulatedData);
 
     function updateLog() {
       const currentDashboardData = dashboardData.current;
 
-      if (currentDashboardData.tick === simulatedDataLength || launchState.current === 0) {
+      if (
+        currentDashboardData.tick >= simulatedDataLength
+        || launchState.current === 0
+        || simulatedData.video[videoIdx] === undefined
+      ) {
         clearInterval(timer);
+        setLaunchState(0);
+        setTimeout(() => {
+          initializeDashboard();
+        }, 300);
       } else {
         currentDashboardData.tick += 1;
         currentDashboardData.displayTime = makeSecondDisplayable(currentDashboardData.tick);
@@ -159,8 +170,14 @@ function createHandleClickSubmit({
       }
     }
 
-    const video = videoRef.current;
-    const spectrogram = spectrogramRef.current;
+    function initializeDashboard() {
+      const context = spectrogram.getContext('2d')!;
+      context.clearRect(0, 0, spectrogram.width, spectrogram.height);
+      video.pause();
+      video.currentTime = 0;
+      dashboardData.current = getInitialDashboardData();
+      updateState({});
+    }
 
     if (launchState.current === 0) {
       setLaunchState(1);
@@ -184,12 +201,7 @@ function createHandleClickSubmit({
 
       log('createHandleclickSubmit(): stop');
       setTimeout(() => {
-        const context = spectrogram.getContext('2d')!;
-        context.clearRect(0, 0, spectrogram.width, spectrogram.height);
-        video.pause();
-        video.currentTime = 0;
-        dashboardData.current = getInitialDashboardData();
-        updateState({});
+        initializeDashboard();
       }, 300);
     }
   };

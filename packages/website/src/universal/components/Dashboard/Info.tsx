@@ -5,6 +5,7 @@ import Card from './Card';
 import color from '@@src/universal/styles/color';
 
 const StyledInfo = styled(Card)({
+  fontSize: '0.92em',
 });
 
 const Time = styled.p({
@@ -26,7 +27,6 @@ const Likelihood = styled.p({
   '&>span': {
     marginRight: '0.4em',
   },
-  fontSize: '0.92em',
 });
 
 const Info = ({
@@ -38,7 +38,7 @@ const Info = ({
     <StyledInfo>
       <Time>
         <span>
-          Time Elapsed:
+          Time elapsed:
         </span>
         <span>
           {dashboardData.displayTime}

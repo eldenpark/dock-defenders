@@ -17,7 +17,7 @@ const StyledVideoLog = styled.div({
 const LogBody = styled.div({
   height: 230,
   overflow: 'scroll',
-  scrollHehavior: 'smooth',
+  scrollBehavior: 'smooth',
 });
 
 const DisplayName = styled.span<any>(({
@@ -54,10 +54,8 @@ const LogItem: React.FC<any> = ({
   }
 
   React.useEffect(() => {
-    if (payload.length > 0) {
-      const logBody = logBodyRef.current;
-      logBody.scrollTop = logBody.scrollHeight - logBody.clientHeight;
-    }
+    const logBody = logBodyRef.current;
+    logBody.scrollTop = logBody.scrollHeight - logBody.clientHeight;
   });
 
   return (
