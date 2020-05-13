@@ -1,9 +1,10 @@
-# Dock Defender
+# Dock Defenders
 Micro-UAV defense system for aircraft carriers in foreign ports in peacetime.
 
-This project is initiated for CSCI 599 - Special Topics (Hacking for Defense) in Spring 2020 at the University of Southern California.
+This project is initiated for CSCI 599 - Special Topics (Hacking for Defense) in spring 2020 at the University of Southern California.
 
-Github repo: [https://github.com/eldeni/dock-defenders](https://github.com/eldeni/dock-defenders)
+- Github repo: [https://github.com/eldeni/dock-defenders](https://github.com/eldeni/dock-defenders)
+- Demo: [https://eldeni.github.io/dock-defenders](https://eldeni.github.io/dock-defenders)
 
 ## Problem prompt
 US Navy ship security teams in ports need to learn how an enemy might place an object on a ship using Micro Unmanned Aerial Systems (mUAS) in order to fortify vessel defenses in port.
@@ -28,13 +29,9 @@ Below we provide two different videos we tried to merge into one as an example.
 
 
 ## Documentation
-**Final Report**
+**[Final Report](https://docs.google.com/document/d/1O2uDoGs6mDqzvAIVoGMtDXby9XzD4Tt07XqDDN8YOTw/edit?usp=sharing)**
 
-[Link](https://docs.google.com/document/d/1O2uDoGs6mDqzvAIVoGMtDXby9XzD4Tt07XqDDN8YOTw/edit?usp=sharing)
-
-**Presentation**
-
-[Link](https://docs.google.com/presentation/d/1EcVRZDlwae2sgNdfm3ys6yM--ynLRUX6-OPq5U-G2LU/edit?usp=sharing)
+**[Presentation](https://docs.google.com/presentation/d/1EcVRZDlwae2sgNdfm3ys6yM--ynLRUX6-OPq5U-G2LU/edit?usp=sharing)**
 
 ## Contributors
 - Patrick Darrow [https://www.linkedin.com/in/patrickjdarrow/](https://www.linkedin.com/in/patrickjdarrow/)

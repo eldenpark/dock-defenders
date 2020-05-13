@@ -10,6 +10,10 @@ const StyledAbout = styled.div({
   '& h1, & h2, & h3': {
     fontFamily: '"Noto Sans JP", "sans-serif"',
   },
+  '& h2': {
+    borderBottom: '1px solid #c9c9c9',
+    padding: '5px 0 2px 0',
+  },
   '& p': {
     marginBottom: 14,
   },

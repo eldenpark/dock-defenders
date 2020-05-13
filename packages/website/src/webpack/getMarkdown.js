@@ -14,7 +14,7 @@ module.exports = function getMarkdown() {
     const content = fs.readFileSync(readmePath).toString();
 
     const converter = new showdown.Converter();
-    html = converter.makeHtml(content);
+    html = converter.makeHtml(content).replace(/\r?\n|\r/g, '');
     process.env.ABOUT_HTML = html;
     log('getMarkdown(): process.env.ABOUT_HTML: %s', html);
   } catch (err) {
