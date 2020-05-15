@@ -16,6 +16,11 @@ Currently micro UAV(uavs from 50cm diameter and smaller) pose a risk to US Navy 
 
 Understandably, the baseline for a system that would protect and inform Navy crews is one of comprehensiveness and reliability. Our general strategy for addressing these broad and apparent needs converged on first identifying the needs and worries of Navy members themselves. In talks with sailors on active duty, defense system engineers of the DoD, scientists of NSWC Crane, and more, it was the general consensus that Navy ships are wholly unprepared for the unique threat vector of microUAVs. It also became clear that there were two distinct classes of drone threats: fully autonomous, and remotely operated. Fully autonomous microUAVs would be deployed uniquely by wealthier adversaries, with the means to fund the necessary research and hardware. These drones would have negligible electromagnetic footprint, and operate with localized navigation such as computer vision. On the other hand, remotely operated microUAVs are inexpensive, commercially available, and would likely be operated by smaller, non-state parties. Both yield significant payload capacity, given their size, and could be integral sources of hard point damage during a pinpoint attack.
 
+## Simulation
+For demonstration’s purpose, we have implemented a simulated version of our system. It is meant to tap into a vessel's sensor suite to provide a perimeter of detection and live feed of intruding UAVs. In other words, we assume cameras and microphones are well located on a spacecraft to give Dock Defenders real-time recordings.
+
+On the left side of our dashboard, the video feed shows markings to indicate where drones are detected. The diagram on the right shows the audio signal that our system uses as input to our ensemble model. This ensemble model is designed to scale with additional sensor inputs and integrate into the existing workflow of end users.
+
 ## Methodologies
 **Ensemble Model Approach**
 
@@ -28,7 +33,6 @@ Due to inherent difficulty of collecting the data on site, especially in the tim
 Below we provide two different videos we tried to merge into one as an example.
 - [Drone flying over grassland](https://www.youtube.com/watch?v=y2upGBMHhuw)
 - [Shipyard](https://youtu.be/ys6NzFWK4oU)
-
 
 ## Documentation
 **[Final Report](https://docs.google.com/document/d/1O2uDoGs6mDqzvAIVoGMtDXby9XzD4Tt07XqDDN8YOTw/edit?usp=sharing)**

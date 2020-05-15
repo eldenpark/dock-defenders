@@ -12,7 +12,7 @@ import Video from './Video';
 
 const publicPath = process.env.PUBLIC_PATH;
 
-const warnMsg = `The dashboard is optimized for a viewport of width 700px or greater. Media data may take a while to load. Please allow a few seconds if you are in low-bandwidth environment`;
+const warnMsg = `The dashboard is optimized for a viewport of width 700px or greater. Media data may take a while to load. Please allow a few seconds if you are in a low-bandwidth environment`;
 
 const StyledDashboard = styled.div({
   backgroundColor: color.dashboardBackground,
