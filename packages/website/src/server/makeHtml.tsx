@@ -1,7 +1,6 @@
 import {
   createAssetElements,
 } from 'express-isomorphic/utils';
-import { dom } from '@fortawesome/fontawesome-svg-core';
 import { logger } from 'jege/server';
 import { MakeHtml } from 'express-isomorphic';
 import React from 'react';
@@ -52,7 +51,6 @@ const makeHtml: MakeHtml<IsomorphicState> = async ({
   const styleTags = serverStyleSheet.getStyleTags();
 
   const html = template({
-    fontAwesomeCss: dom.css(),
     isomorphicData,
     reactAppInString,
     reactAssetElements,
@@ -66,7 +64,6 @@ const makeHtml: MakeHtml<IsomorphicState> = async ({
 };
 
 function template({
-  fontAwesomeCss,
   isomorphicData,
   reactAppInString,
   reactAssetElements,
@@ -77,16 +74,8 @@ function template({
   return `
 <html>
   <head>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-161485149-1"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'UA-161485149-1');
-    </script>
     <link rel="icon" type="image/x-icon" href="/g/favicon.ico">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
-    <style>${fontAwesomeCss}</style>
     ${styledComponentsStyleElements}
     <script>window['ISOMORPHIC_DATA']=${JSON.stringify(isomorphicData)}</script>
     <title>Dock Defenders</title>

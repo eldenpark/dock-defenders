@@ -5,7 +5,6 @@ import color from '@@src/universal/styles/color';
 
 const StyledControl = styled.div({
   display: 'flex',
-  margin: '30px 0 10px',
 });
 
 const Button = styled.button<any>(({

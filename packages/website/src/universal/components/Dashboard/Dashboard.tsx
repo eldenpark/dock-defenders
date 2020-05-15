@@ -12,6 +12,8 @@ import Video from './Video';
 
 const publicPath = process.env.PUBLIC_PATH;
 
+const warnMsg = `The dashboard is optimized for a viewport of width 700px or greater. Media data may take a while to load. Please allow a few seconds if you are in low-bandwidth environment`;
+
 const StyledDashboard = styled.div({
   backgroundColor: color.dashboardBackground,
   color: 'white',
@@ -24,6 +26,18 @@ const StyledDashboard = styled.div({
 const DashboardBody = styled.div({
   display: 'flex',
   justifyContent: 'center',
+});
+
+const Bottom = styled.div({
+  display: 'flex',
+  justifyContent: 'space-between',
+  marginTop: 21,
+});
+
+const Warn = styled.div({
+  color: color.gray,
+  fontSize: '0.8em',
+  marginLeft: 45,
 });
 
 const Column = styled.div<any>(({
@@ -99,12 +113,15 @@ const Dashboard = ({
           />
         </Column>
       </DashboardBody>
-      <div>
+      <Bottom>
         <Control
           handleClickSubmit={handleClickSubmit}
           launchState={launchState}
         />
-      </div>
+        <Warn>
+          <p>{warnMsg}</p>
+        </Warn>
+      </Bottom>
     </StyledDashboard>
   );
 };

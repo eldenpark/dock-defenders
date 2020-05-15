@@ -6,6 +6,8 @@ This project is initiated for CSCI 599 - Special Topics (Hacking for Defense) in
 - Github repo: [https://github.com/eldeni/dock-defenders](https://github.com/eldeni/dock-defenders)
 - Demo: [https://eldeni.github.io/dock-defenders](https://eldeni.github.io/dock-defenders)
 
+![Demo](/dock-defenders/assets/demo-1.gif)
+
 ## Problem prompt
 US Navy ship security teams in ports need to learn how an enemy might place an object on a ship using Micro Unmanned Aerial Systems (mUAS) in order to fortify vessel defenses in port.
 
