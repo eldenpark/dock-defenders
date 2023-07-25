@@ -3,10 +3,10 @@ Micro-UAV defense system for aircraft carriers in foreign ports in peacetime.
 
 This project is initiated for CSCI 599 - Special Topics (Hacking for Defense) in spring 2020 at the University of Southern California.
 
-- Github repo: [https://github.com/eldeni/dock-defenders](https://github.com/eldeni/dock-defenders)
-- Demo: [https://eldeni.github.io/dock-defenders](https://eldeni.github.io/dock-defenders)
+- Github repo: [https://github.com/eldenpark/dock-defenders](https://github.com/eldenpark/dock-defenders)
+- Demo: [https://eldenpark.github.io/dock-defenders](https://eldenpark.github.io/dock-defenders/)
 
-![Demo](https://github.com/eldeni/dock-defenders/raw/master/docs/assets/demo-2.gif)
+![Demo](https://github.com/eldenpark/dock-defenders/raw/master/docs/assets/demo-2.gif)
 
 ## Problem prompt
 US Navy ship security teams in ports need to learn how an enemy might place an object on a ship using Micro Unmanned Aerial Systems (mUAS) in order to fortify vessel defenses in port.
